@@ -1,13 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import config from "../config/config";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,9 +19,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", formData);
+      const res = await axios.post(
+        `${config.backendURI}/api/auth/login`,
+        formData
+      );
       localStorage.setItem("token", res.data.token);
       alert("Login Successful!");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -26,7 +33,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Register on Blog Post</h2>
+      <h2>Sign in to Blog Post</h2>
       <input
         type="email"
         name="email"

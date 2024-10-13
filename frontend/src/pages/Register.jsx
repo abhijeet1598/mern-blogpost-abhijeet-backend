@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import config from "../config/config";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ const Register = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -16,8 +19,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/auth/register", formData);
+      await axios.post(`${config.backendURI}/api/auth/register`, formData);
       alert("Registration Successful!");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -25,7 +29,7 @@ const Register = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Sign in to Blog Post</h2>
+      <h2>Register on Blog Post</h2>
       <input
         type="text"
         name="username"
